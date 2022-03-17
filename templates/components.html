@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<meta charset="UTF-8">
+<h2 align="center" style="padding: 15px">РАДИОКОМПОНЕНТЫ</h2>
+<div class="table" align="center">
+    <table class="my_table table-hover" >
+        <tr class="my_row" style="color:#FFFFFF">
+            <td class="title" width="150px" bgcolor="#6667AB">Наименование</td>
+            <td class="title" width="100px" bgcolor="#6667AB">Тип</td>
+            <td class="title" width="400px" bgcolor="#6667AB" align="center">Кратк. сведения</td>
+            <td class="title" width="200px" bgcolor="#6667AB" align="center">ДАТАШИТ</td>
+        </tr>
+        {% for comp in comps %}
+        <tr class="my_row">
+            <td class="ordinary" bgcolor="#eeeeff">{{ comp.title.capitalize() }}</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ comp.type }}</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ comp.about }}</td>
+            {% if comp.datasheet %}
+            <td class="ordinary" bgcolor="#eeeeff"><a style="display: block;" href="{{ comp.datasheet }}">{{ comp.datasheet }}</a></td>
+            {% else %}
+            <td class="ordinary" bgcolor="#eeeeff" align="center">НЕТ ДАННЫХ</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<br>
+
+{% endblock %}
