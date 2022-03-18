@@ -73,7 +73,7 @@ def logout():
 def components():
     db_sess = db_session.create_session()
     comps = db_sess.query(Components).all()
-    return render_template("components.html", comps=comps, title='Work log')
+    return render_template("components.html", comps=comps, title='Радиокомпоненты')
 
 
 @app.route('/news', methods=['GET', 'POST'])
