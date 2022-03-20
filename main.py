@@ -4,8 +4,9 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from data import db_session
 from data.users import User
 from data.news import News
-from forms.news import NewsForm
+from forms.news import NewsForm, ProjectForm
 from data.components import Components
+from data.comments import Comment
 from forms.user import RegisterForm, LoginForm
 
 app = Flask(__name__)
@@ -27,7 +28,39 @@ def index():
         news = db_sess.query(News).filter((News.user == current_user) | (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+    return render_template("start_page.html", news=news)
+
+
+@app.route("/projects", methods=['GET', 'POST'])
+def projects():
+    db_sess = db_session.create_session()
+    form = ProjectForm()
+    if current_user.is_authenticated:
+        news = db_sess.query(News).filter((News.is_private != True) | (News.user == current_user))
+    else:
+        news = db_sess.query(News).filter(News.is_private != True)
+    if form.validate_on_submit():
+        if form.is_private.data:
+            news = db_sess.query(News).filter(News.user == current_user)
+    return render_template("index.html", news=news, form=form)
+
+
+@app.route("/project/<int:id>", methods=['GET', 'POST'])
+def project(id):
+    db_sess = db_session.create_session()
+    if current_user.is_authenticated:
+        news = db_sess.query(News).filter(
+            News.id == id, News.user == current_user).first()
+    else:
+        news = db_sess.query(News).filter(
+            News.id == id, News.is_private != True).first()
+    if news is None:
+        news = db_sess.query(News).filter(
+            News.id == id, News.is_private != True).first()
+    if news:
+        comments = db_sess.query(Comment).filter((News.id == Comment.news_id))
+        return render_template("project.html", news=news, comments=comments)
+    return redirect("/projects")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -57,7 +90,7 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect("/")
+            return redirect("/projects")
         return render_template('login.html', message="Неправильный логин или пароль", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
@@ -66,7 +99,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/")
+    return redirect("/projects")
 
 
 @app.route('/components')
@@ -85,12 +118,13 @@ def add_news():
         news = News()
         news.title = form.title.data
         news.content = form.content.data
+        news.about = form.url.data
         news.is_private = form.is_private.data
         current_user.news.append(news)
         db_sess.merge(current_user)
         db_sess.commit()
-        return redirect('/')
-    return render_template('news.html', title='Добавление новости', form=form)
+        return redirect('/projects')
+    return render_template('news.html', title='Добавление проекта', form=form)
 
 
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
@@ -103,7 +137,7 @@ def news_delete(id):
         db_sess.commit()
     else:
         abort(404)
-    return redirect('/')
+    return redirect('/projects')
 
 
 @app.route('/news/<int:id>', methods=['GET', 'POST'])
@@ -129,13 +163,14 @@ def edit_news(id):
         if news:
             news.title = form.title.data
             news.content = form.content.data
+            news.about = form.url.data
             news.is_private = form.is_private.data
             db_sess.commit()
-            return redirect('/')
+            return redirect(f'/project/{id}')
         else:
             abort(404)
     return render_template('news.html',
-                           title='Редактирование новости',
+                           title='Редактирование проекта',
                            form=form
                            )
 

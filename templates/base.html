@@ -9,19 +9,19 @@
           crossorigin="anonymous">
     <title>{{title}}</title>
 </head>
-<body>
+<body style="background-image: url('../static/img/background_wallpaper1.jpg'); background-attachment: fixed;">
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="border-radius: 0 0 10px 10px">
-        <a class="navbar-brand"><img src="/static/img/repka1.jpg" width="30" height="30"
+        <a class="navbar-brand"><img src="../static/img/repka1.jpg" width="30" height="30"
                                                class="d-inline-block align-top" alt="Картинка репки"> РЕПКА</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link active" href="/#">Главная<span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="/components">Радиокомпоненты</a>
-                <a class="nav-item nav-link" href="/#">Проекты</a>
+                <a class="nav-item nav-link active" style="color:#DD00DD" href="/#">Главная<span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" style="color:#00DD00" href="/components">Радиокомпоненты</a>
+                <a class="nav-item nav-link" style="color:#00DD00" href="/projects">Проекты</a>
             </div>
         </div>
         {% if current_user.is_authenticated %}
