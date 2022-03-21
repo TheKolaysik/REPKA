@@ -15,3 +15,7 @@ class NewsForm(FlaskForm):
 class ProjectForm(FlaskForm):
     is_private = BooleanField("Отобразить только мои")
     submit = SubmitField("Применить")
+
+class CommentForm(FlaskForm):
+    comment = TextAreaField("Комментарий")
+    submit = SubmitField('Добавить')

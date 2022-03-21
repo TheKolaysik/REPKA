@@ -1,7 +1,7 @@
 ﻿from flask import Flask, redirect, render_template, abort, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
-from data import db_session
+from data import db_session, comp_api
 from data.users import User
 from data.news import News
 from forms.news import NewsForm, ProjectForm
@@ -177,6 +177,7 @@ def edit_news(id):
 
 def main():
     db_session.global_init("db/blogs.db")
+    app.register_blueprint(comp_api.blueprint)
     app.run()
 
 

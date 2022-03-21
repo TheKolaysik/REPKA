@@ -7,13 +7,15 @@
     <div>
         <a style="font-size: 32px; padding: 15px"><font face="Comic Sans MS" color="#000000">{{news.title}}</font></a>
     </div>
-    {% if current_user.is_authenticated and current_user == news.user %}
+
     <div style="padding: 5px;">
         <a style="font-size: 20px; padding: 15px">Автор: {{news.user.name}}, Дата изменения: {{news.created_date}}</a>
+        {% if current_user.is_authenticated and current_user == news.user %}
         <a href="/news/{{ news.id }}" class="btn btn-warning">Изменить</a>
         <a href="/news_delete/{{ news.id }}" class="btn btn-danger">Удалить</a>
+        {% endif %}
     </div>
-    {% endif %}
+
 </div>
 <div class="col-md6 border border-dark"
      style="padding: 15px; margin: 10px; border-radius: 10px; backdrop-filter: blur(5px); background: rgba(255, 255, 255, 0.4);">
@@ -25,12 +27,12 @@
     <div>
         <a style="font-size: 32px; padding: 15px"><font face="Comic Sans MS" color="#000000">Комментарии</font></a>
     </div>
-
 </div>
 {% for item in comments %}
 <div class="col-md6 border border-dark"
      style="padding: 15px; margin: 5px; border-radius: 10px; backdrop-filter: blur(5px); background: rgba(255, 0, 255, 0.4);">
-    <p><font face="Comic Sans MS" color="#000000">{{item.user.name}}</font></p>
+    <a><font face="Comic Sans MS" color="#000000">{{item.user.name}}</font></a>
+    <a style="padding: 10px"> {{item.created_date}} </a>
     <div style="padding: 15px"><a style="display: block;">{{ item.content }}</a></div>
 </div>
 {% endfor %}
