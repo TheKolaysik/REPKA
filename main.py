@@ -1,10 +1,12 @@
 ﻿from flask import Flask, redirect, render_template, abort, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+import os
+import requests
 
 from data import db_session, comp_api
 from data.users import User
 from data.news import News
-from forms.news import NewsForm, ProjectForm
+from forms.news import NewsForm, ProjectForm, CommentForm, CityForm
 from data.components import Components
 from data.comments import Comment
 from forms.user import RegisterForm, LoginForm
@@ -14,6 +16,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
+organization = None
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -21,14 +25,35 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    db_sess = db_session.create_session()
-    if current_user.is_authenticated:
-        news = db_sess.query(News).filter((News.user == current_user) | (News.is_private != True))
-    else:
-        news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("start_page.html", news=news)
+    form = CityForm()
+    global organization
+    if form.validate_on_submit():
+        search_api_server = "https://search-maps.yandex.ru/v1/"
+        api_key = "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3"
+        search_params = {
+            "apikey": api_key,
+            "text": f"Радиодетали, {form.title.data}",
+            "lang": "ru_RU",
+            "type": "biz"
+        }
+
+        response = requests.get(search_api_server, params=search_params)
+        if not response:
+            # ...
+            pass
+        # Преобразуем ответ в json-объект
+        store_dic = {}
+        json_response = response.json()
+        organization = json_response["features"]
+        for i in range(len(organization)):
+            store_dic[i] = store_dic.get(i, organization[i])
+        for i, t in store_dic.items():
+            print(i, t)
+        return render_template('shops.html', shops=store_dic)
+        # return redirect("/projects")
+    return render_template("start_page.html", form=form)
 
 
 @app.route("/projects", methods=['GET', 'POST'])
@@ -45,9 +70,36 @@ def projects():
     return render_template("index.html", news=news, form=form)
 
 
+@app.route("/shop/<int:id>", methods=['GET', 'POST'])
+def shop(id):
+    global organization
+    shop_n = organization[id]
+    coords = shop_n['geometry']['coordinates']
+    map_request = f"http://static-maps.yandex.ru/1.x/?ll={coords[0]},{coords[1]}&spn=0.002,0.002&l=map&pt={coords[0]},{coords[1]},comma"
+    response = requests.get(map_request)
+
+    if not response:
+        print("Ошибка выполнения запроса:")
+        print(map_request)
+        print("Http статус:", response.status_code, "(", response.reason, ")")
+
+    # Запишем полученное изображение в файл.
+    map_file = "static/img/map.png"
+    with open(map_file, "wb") as file:
+        file.write(response.content)
+    return render_template('shop.html', shop=shop_n)
+
+
 @app.route("/project/<int:id>", methods=['GET', 'POST'])
 def project(id):
+    form = CommentForm()
     db_sess = db_session.create_session()
+    if form.validate_on_submit():
+        comments = Comment(content=form.comment.data, news_id=id)
+        current_user.comments.append(comments)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect(f'/project/{id}')
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
             News.id == id, News.user == current_user).first()
@@ -59,7 +111,7 @@ def project(id):
             News.id == id, News.is_private != True).first()
     if news:
         comments = db_sess.query(Comment).filter((News.id == Comment.news_id))
-        return render_template("project.html", news=news, comments=comments)
+        return render_template("project.html", news=news, comments=comments, form=form)
     return redirect("/projects")
 
 
@@ -179,6 +231,8 @@ def main():
     db_session.global_init("db/blogs.db")
     app.register_blueprint(comp_api.blueprint)
     app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':

@@ -2,5 +2,15 @@
 
 {% block content %}
 <h1 class="display-4" style="padding: 15px">Главная</h1>
-<p></p>
+<p>Тут должен был быть какой-то текст, но я не придумал какой.</p>
+<h3 class="text-center">Найти магазин</h3>
+<div class="col-md6 border border-dark"
+     style="padding: 10px; margin: 15px; border-radius: 10px; backdrop-filter: blur(5px); background: rgba(255, 255, 255, 0.4);">
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>{{ form.title.label }}
+            {{ form.title(class="form-control") }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    </form>
+</div>
 {% endblock %}

@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1 align="center" style="padding: 15px">МАГАЗИНЫ</h1>
+
+{% for i, t in shops.items() %}
+<div class="col-md6 border border-dark"
+     style="padding: 15px; margin: 10px; border-radius: 10px; backdrop-filter: blur(2px); background: rgba(200, 255, 0, 0.3);">
+    <h2><font face="Comic Sans MS" color="#000000"><a style="display: block;" href="/shop/{{i}}">{{t['properties']['name']}}</a></font>
+    </h2>
+    <div>
+        Адрес - {{t['properties']['description']}}, Время работы - {{t['properties']['CompanyMetaData']['Hours']['text']}}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
