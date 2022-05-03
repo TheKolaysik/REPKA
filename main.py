@@ -25,6 +25,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
+# Главная
 @app.route("/", methods=["GET", "POST"])
 def index():
     form = CityForm()
@@ -56,6 +57,7 @@ def index():
     return render_template("start_page.html", form=form)
 
 
+# Проекты
 @app.route("/projects", methods=['GET', 'POST'])
 def projects():
     db_sess = db_session.create_session()
@@ -70,6 +72,7 @@ def projects():
     return render_template("index.html", news=news, form=form)
 
 
+# Отображение магазина
 @app.route("/shop/<int:id>", methods=['GET', 'POST'])
 def shop(id):
     global organization
@@ -90,6 +93,7 @@ def shop(id):
     return render_template('shop.html', shop=shop_n)
 
 
+# Страница публикации
 @app.route("/project/<int:id>", methods=['GET', 'POST'])
 def project(id):
     form = CommentForm()
@@ -115,6 +119,7 @@ def project(id):
     return redirect("/projects")
 
 
+# Регистрация
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     form = RegisterForm()
@@ -134,6 +139,7 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+# Авторизация
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -154,6 +160,7 @@ def logout():
     return redirect("/projects")
 
 
+# Таблица с радиокомпонентами
 @app.route('/components')
 def components():
     db_sess = db_session.create_session()
@@ -161,6 +168,7 @@ def components():
     return render_template("components.html", comps=comps, title='Радиокомпоненты')
 
 
+# Добавление публикации
 @app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
@@ -179,6 +187,7 @@ def add_news():
     return render_template('news.html', title='Добавление проекта', form=form)
 
 
+# Удаление публикации
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
@@ -192,6 +201,7 @@ def news_delete(id):
     return redirect('/projects')
 
 
+# Редактирование публикации
 @app.route('/news/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
