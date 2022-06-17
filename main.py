@@ -42,8 +42,7 @@ def index():
 
         response = requests.get(search_api_server, params=search_params)
         if not response:
-            # ...
-            pass
+            return render_template("start_page.html", form=form)
         # Преобразуем ответ в json-объект
         store_dic = {}
         json_response = response.json()
@@ -114,7 +113,7 @@ def project(id):
         news = db_sess.query(News).filter(
             News.id == id, News.is_private != True).first()
     if news:
-        comments = db_sess.query(Comment).filter((News.id == Comment.news_id))
+        comments = db_sess.query(Comment).filter((news.id == Comment.news_id))
         return render_template("project.html", news=news, comments=comments, form=form)
     return redirect("/projects")
 
