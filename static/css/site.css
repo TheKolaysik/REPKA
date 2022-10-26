@@ -1,0 +1,256 @@
+html {
+}
+
+body {
+    background: linear-gradient(to bottom right, yellow, grey, green);
+    background-attachment: fixed;
+}
+
+.navbar {
+    border-radius: 10px 10px 10px 10px;
+    margin: 5px;
+    display: flex;
+    position: relative;
+    z-index: 100;
+    transform: translateY(0);
+    color: wheat;
+}
+
+#navbar {
+    
+}
+
+.fix {
+    position: fixed;
+    left:0;
+    right:0;
+    margin:15px;
+    animation: fix 1s forwards;
+}
+
+.fix_2 {
+    position: fixed;
+    margin: 15px;
+    left: 0;
+    top: 65px;
+    width:15%;
+    animation: fix 1s forwards;
+}
+
+@keyframes fix {
+    0% {
+        transform: translateY(-200%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+.no_fix {
+    position: relative;
+    animation: no_fix 1s forwards;
+}
+
+.no_fix_2 {
+    position: relative;
+    animation: no_fix_2 1s forwards;
+}
+
+@keyframes no_fix {
+    0% {
+        position: fixed;
+        left: 0;
+        right: 0;
+        transform: translateY(0);
+    }
+
+    60% {
+        position: relative;
+        transform: translateY(-200%);
+    }
+
+    100% {
+        position: relative;
+        transform: translateY(0);
+    }
+}
+
+@keyframes no_fix_2 {
+    0% {
+        position: fixed;
+        transform: translateY(0);
+    }
+
+    60% {
+        position: relative;
+        transform: translateY(-200%);
+    }
+
+    100% {
+        position: relative;
+        transform: translateY(0);
+    }
+}
+
+.nav-link {
+    color: white;
+
+}
+
+.nav-link:hover {
+     color: yellow;
+ }
+
+.navbar-btn,
+.btn-nav {
+    background-color: wheat;
+    border-radius: 20px;
+    margin-right: 5px;
+    color: black;
+}
+
+.navbar-fixed {
+    right:auto;
+    z-index: 100;
+    position: fixed;
+}
+
+#SearchForm input[type=text],
+#SearchForm input[type=submit] {
+    border: 1px solid #999;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    padding: 5px;
+    width: 85%;
+}
+#SearchForm input[type=submit] {
+    min-width: 60px;
+    width: 10%;
+}
+
+.navbar-btn,
+.btn-nav:active {
+    border-radius: 20px;
+    background: transparent;
+    color: wheat;
+    border-color: #4676d7;
+    
+}
+
+.navbar a {
+    color: wheat;
+    display:block;
+}
+
+.navbar-btn a {
+    color: black;
+}
+
+.jumbotron {
+
+}
+
+.container {
+    margin-left: 0;
+    margin-right: 0;
+    justify-items: center;
+}
+
+.home-info {
+    background-color: aqua;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.row {
+}
+
+.Absolute-Center {
+    margin: 0 auto;
+    position: absolute;
+    overflow: auto;
+    left: 0;
+    right: 0;
+}
+
+.Relative-Center {
+    margin: 0 auto;
+    position: relative;
+    overflow: auto;
+    left: 0;
+    right: 0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 10px;
+}
+
+.col-md {
+    display:grid;
+    background-color: aqua;
+    margin: 5px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    padding: 10px;
+    justify-items:center; 
+    align-content:center;
+}
+
+btn-default {
+    border: 2px solid black;
+}
+
+.lead {
+    align-self: center;
+}
+
+.search_shops {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.list_of_shops {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    background: rgba(200, 255, 0, 0.3);
+}
+
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}

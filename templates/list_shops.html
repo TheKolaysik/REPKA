@@ -1,0 +1,16 @@
+{% extends "shops.html" %}
+
+{% block info %}
+
+{% for i, t in shops.items() %}
+<div class="col-md6 border border-dark list_of_shops">
+    <h2>
+        <font face="Comic Sans MS" color="#000000"><a href="/shop/{{i}}"><b>{{t.properties.name}}</b></a></font>
+    </h2>
+    <div>
+        Адрес - {{ t.properties.description }}, Время работы - {{ t.properties.CompanyMetaData.Hours.text }}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
