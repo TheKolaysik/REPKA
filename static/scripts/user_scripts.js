@@ -2,10 +2,6 @@ function goBack() {
     window.history.back();
 }
 
-var hamburger = document.querySelector(".hamburger");
-hamburger.addEventListener("click", function () {
-    document.querySelector("body").classList.toggle("active");
-})
 
 var wHeight = $(window).innerHeight();
 
