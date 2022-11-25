@@ -47,7 +47,6 @@ try:
             }
 
             response = requests.get(search_api_server, params=search_params)
-            print(response)
             if not response:
                 pass
             # Преобразуем ответ в json-объект

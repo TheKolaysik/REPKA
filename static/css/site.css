@@ -107,7 +107,6 @@ body {
 .btn-nav {
     background-color: wheat;
     border-radius: 20px;
-    margin-right: 5px;
     color: black;
 }
 
@@ -128,6 +127,12 @@ body {
 #SearchForm input[type=submit] {
     min-width: 60px;
     width: 10%;
+}
+
+.shop_bord {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 5px;
+    border: 10px;
 }
 
 .navbar-btn,
